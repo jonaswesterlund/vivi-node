@@ -30,7 +30,7 @@ export default class QuestionResolver {
   }
 
   @Mutation(() => Question)
-  async addQuestionAssessment(
+  async addQuestion(
     @Arg('questionInput', () => AddQuestionInput) questionInput: AddQuestionInput,
   ) {
     const question = this.questionRepository.create(questionInput);
