@@ -15,7 +15,7 @@ export default class Question {
   content!: string;
 
   @Field(() => [String], { nullable: true })
-  @Column('text', { array: true })
+  @Column({ type: 'text', array: true })
   answerChoices!: string[];
 
   @Field({ nullable: true })
