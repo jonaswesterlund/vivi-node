@@ -1,3 +1,4 @@
+import CategoryResolver from './CategoryResolver';
 import QuestionResolver from './QuestionResolver';
 
-export default [QuestionResolver];
+export default [CategoryResolver, QuestionResolver];

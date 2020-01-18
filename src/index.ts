@@ -6,6 +6,7 @@ import { buildSchema } from 'type-graphql';
 import cors from 'cors';
 import resolvers from './resolver/Resolver';
 import config from './utils/config';
+import initTestData from './utils/testData';
 
 const initServer = async () => {
   const app = express();
@@ -28,6 +29,7 @@ const initServer = async () => {
 
   const schema = await buildSchema({
     resolvers,
+    validate: false,
   });
 
   const server = new ApolloServer({
@@ -42,4 +44,6 @@ const initServer = async () => {
   });
 };
 
-initServer();
+initServer().then(() => {
+  initTestData();
+});

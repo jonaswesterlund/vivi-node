@@ -1,7 +1,8 @@
 import { Field, ObjectType, ID } from 'type-graphql';
 import {
-  Entity, PrimaryGeneratedColumn, Column,
+  Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable,
 } from 'typeorm';
+import Category from './Category';
 
 @ObjectType()
 @Entity()
@@ -18,7 +19,11 @@ export default class Question {
   @Column({ type: 'text', array: true })
   answerChoices!: string[];
 
-  @Field({ nullable: true })
-  @Column()
-  label!: string;
+  @Column({ type: 'text', array: true, nullable: true })
+  categoryIds!: string[];
+
+  @Field(() => [Category], { nullable: true })
+  @ManyToMany(() => Category)
+  @JoinTable()
+  categories!: Category[];
 }

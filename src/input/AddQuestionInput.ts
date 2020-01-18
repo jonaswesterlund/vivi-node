@@ -1,5 +1,6 @@
-import { InputType, Field } from 'type-graphql';
+import { InputType, Field, ID } from 'type-graphql';
 import Question from '../entity/Question';
+import Category from '../entity/Category';
 
 @InputType()
 export default class AddQuestionInput implements Partial<Question> {
@@ -9,6 +10,6 @@ export default class AddQuestionInput implements Partial<Question> {
   @Field(() => [String], { nullable: true })
   answerChoices!: string[];
 
-  @Field({ nullable: true })
-  label!: string;
+  @Field(() => [ID], { nullable: true })
+  categoryIds!: string[];
 }
