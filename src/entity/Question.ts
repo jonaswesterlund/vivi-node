@@ -20,7 +20,7 @@ export default class Question {
   answerChoiceIds!: string[];
 
   @Field(() => [AnswerChoice], { nullable: true })
-  @OneToMany(() => AnswerChoice, (answerChoice) => answerChoice.question)
+  @OneToMany(() => AnswerChoice, (answerChoice) => answerChoice.question, { cascade: true })
   answerChoices!: AnswerChoice[];
 
   @Column({ type: 'text', array: true, nullable: true })
