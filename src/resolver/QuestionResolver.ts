@@ -5,6 +5,7 @@ import { getCustomRepository } from 'typeorm';
 import QuestionRepository from '../repository/QuestionRepository';
 import Question from '../entity/Question';
 import AddQuestionInput from '../input/AddQuestionInput';
+import AnswerChoiceRepository from '../repository/AnswerChoiceRepository';
 import CategoryRepository from '../repository/CategoryRepository';
 
 @Resolver(() => Question)
@@ -13,9 +14,12 @@ export default class QuestionResolver {
 
   categoryRepository: CategoryRepository;
 
+  answerChoiceRepository: AnswerChoiceRepository;
+
   constructor() {
     this.questionRepository = getCustomRepository(QuestionRepository);
     this.categoryRepository = getCustomRepository(CategoryRepository);
+    this.answerChoiceRepository = getCustomRepository(AnswerChoiceRepository);
   }
 
   @Query(() => [Question])
@@ -39,6 +43,7 @@ export default class QuestionResolver {
   ) {
     const question = this.questionRepository.create(questionInput);
     question.categories = await this.categoryRepository.findByIds(questionInput.categoryIds);
+    question.answerChoices = await this.answerChoiceRepository.findByIds(questionInput.answerChoiceIds);
     return this.questionRepository.save(question);
   }
 

@@ -7,8 +7,8 @@ export default class AddQuestionInput implements Partial<Question> {
   @Field({ nullable: true })
   content!: string;
 
-  @Field(() => [String], { nullable: true })
-  answerChoices!: string[];
+  @Field(() => [ID], { nullable: true })
+  answerChoiceIds!: string[];
 
   @Field(() => [ID], { nullable: true })
   categoryIds!: string[];
