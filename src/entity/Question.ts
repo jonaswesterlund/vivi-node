@@ -16,9 +16,6 @@ export default class Question {
   @Column()
   content!: string;
 
-  @Column({ type: 'text', array: true, nullable: true })
-  answerChoiceIds!: string[];
-
   @Field(() => [AnswerChoice], { nullable: true })
   @OneToMany(() => AnswerChoice, (answerChoice) => answerChoice.question, { cascade: true })
   answerChoices!: AnswerChoice[];
@@ -27,7 +24,5 @@ export default class Question {
   categoryIds!: string[];
 
   @Field(() => [Category], { nullable: true })
-  @ManyToMany(() => Category)
-  @JoinTable()
   categories!: Category[];
 }

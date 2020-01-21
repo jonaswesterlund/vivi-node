@@ -1,32 +1,27 @@
 import {
-  Resolver, Query, Arg, ID, Mutation, FieldResolver,
+  Resolver, Query, Arg, Mutation, FieldResolver, Root,
 } from 'type-graphql';
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, Raw } from 'typeorm';
 import CategoryRepository from '../repository/CategoryRepository';
 import Category from '../entity/Category';
 import AddCategoryInput from '../input/AddCategoryInput';
+import Question from '../entity/Question';
+import QuestionRepository from '../repository/QuestionRepository';
 
 @Resolver(() => Category)
 export default class CategoryResolver {
   categoryRepository: CategoryRepository;
 
+  questionRepository: QuestionRepository;
+
   constructor() {
     this.categoryRepository = getCustomRepository(CategoryRepository);
+    this.questionRepository = getCustomRepository(QuestionRepository);
   }
 
   @Query(() => [Category])
   async allCategories() {
     return this.categoryRepository.find();
-  }
-
-  @Query(() => [Category])
-  async categories(@Arg('ids', () => [ID]) ids: string[]) {
-    return this.categoryRepository.findByIds(ids);
-  }
-
-  @Query(() => Category)
-  async category(@Arg('id', () => ID) id: string) {
-    return this.categoryRepository.findOne(id);
   }
 
   @Mutation(() => Category)
@@ -37,8 +32,8 @@ export default class CategoryResolver {
     return this.categoryRepository.save(category);
   }
 
-  @Mutation(() => Category)
-  async removeCategory(@Arg('id', () => ID) id: string) {
-    return this.categoryRepository.delete(id);
+  @FieldResolver(() => [Question])
+  async questions(@Root() category: Category) {
+    return this.questionRepository.find({ categoryIds: Raw((alias) => `'${category.id}' = ANY (${alias})`) });
   }
 }

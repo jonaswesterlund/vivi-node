@@ -27,6 +27,8 @@ const initServer = async () => {
     dropSchema: true,
   });
 
+  await initTestData();
+
   const schema = await buildSchema({
     resolvers,
     validate: false,
@@ -44,6 +46,4 @@ const initServer = async () => {
   });
 };
 
-initServer().then(() => {
-  initTestData();
-});
+initServer();

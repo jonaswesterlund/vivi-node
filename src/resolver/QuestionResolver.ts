@@ -7,6 +7,7 @@ import Question from '../entity/Question';
 import AddQuestionInput from '../input/AddQuestionInput';
 import AnswerChoiceRepository from '../repository/AnswerChoiceRepository';
 import CategoryRepository from '../repository/CategoryRepository';
+import AddAnswerChoiceInput from '../input/AddAnswerChoiceInput';
 
 @Resolver(() => Question)
 export default class QuestionResolver {
@@ -28,11 +29,6 @@ export default class QuestionResolver {
   }
 
   @Query(() => [Question])
-  async questions(@Arg('ids', () => [ID]) ids: string[]) {
-    return this.questionRepository.findByIds(ids);
-  }
-
-  @Query(() => Question)
   async question(@Arg('id', () => ID) id: string) {
     return this.questionRepository.findOne(id);
   }
@@ -40,20 +36,21 @@ export default class QuestionResolver {
   @Mutation(() => Question)
   async addQuestion(
     @Arg('questionInput', () => AddQuestionInput) questionInput: AddQuestionInput,
+    @Arg('answerChoicesInput', () => [AddAnswerChoiceInput]) answerChoicesInput: AddAnswerChoiceInput[],
   ) {
     const question = this.questionRepository.create(questionInput);
     question.categories = await this.categoryRepository.findByIds(questionInput.categoryIds);
-    question.answerChoices = await this.answerChoiceRepository.findByIds(questionInput.answerChoiceIds);
+    question.answerChoices = answerChoicesInput.map((input) => this.answerChoiceRepository.create(input));
     return this.questionRepository.save(question);
-  }
-
-  @Mutation(() => Question)
-  async removeQuestion(@Arg('id', () => ID) id: string) {
-    return this.questionRepository.delete(id);
   }
 
   @FieldResolver()
   async categories(@Root() question: Question) {
     return this.categoryRepository.findByIds(question.categoryIds);
+  }
+
+  @FieldResolver()
+  async answerChoices(@Root() question: Question) {
+    return this.answerChoiceRepository.find({ questionId: question.id });
   }
 }

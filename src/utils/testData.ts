@@ -14,40 +14,53 @@ const initTestData = async () => {
 
   const answerChoiceRepository = getCustomRepository(AnswerChoiceRepository);
   const questionRepository = getCustomRepository(QuestionRepository);
-  const answerChoices1: AnswerChoice[] = [
-    answerChoiceRepository.create({ answer: 'a' }),
-    answerChoiceRepository.create({ answer: 'b' }),
-    answerChoiceRepository.create({ answer: 'c' }),
-    answerChoiceRepository.create({ answer: 'd' }),
-  ];
-  const question1 = questionRepository.create({ content: 'Vad är en grupp?', answerChoiceIds: answerChoices1.map((choice) => choice.id), categoryIds: [categories[1].id] });
-  const answerChoices2: AnswerChoice[] = [
-    answerChoiceRepository.create({ answer: 'a' }),
-    answerChoiceRepository.create({ answer: 'b' }),
-    answerChoiceRepository.create({ answer: 'c' }),
-    answerChoiceRepository.create({ answer: 'd' }),
-  ];
-  const question2 = questionRepository.create({ content: 'Vad är en öppen mängd?', answerChoiceIds: answerChoices2.map((choice) => choice.id), categoryIds: [categories[3].id] });
-  const answerChoices3: AnswerChoice[] = [
-    answerChoiceRepository.create({ answer: 'a' }),
-    answerChoiceRepository.create({ answer: 'b' }),
-    answerChoiceRepository.create({ answer: 'c' }),
-    answerChoiceRepository.create({ answer: 'd' }),
-  ];
-  const question3 = questionRepository.create(
-    { content: 'Vad är en Weierstrass sats?', answerChoiceIds: answerChoices3.map((choice) => choice.id), categoryIds: [categories[2].id] },
-  );
-  const answerChoices4: AnswerChoice[] = [
-    answerChoiceRepository.create({ answer: 'a' }),
-    answerChoiceRepository.create({ answer: 'b' }),
-    answerChoiceRepository.create({ answer: 'c' }),
-    answerChoiceRepository.create({ answer: 'd' }),
-  ];
-  const question4 = questionRepository.create({ content: 'Vad är en sluten mängd?', answerChoiceIds: answerChoices4.map((choice) => choice.id), categoryIds: [categories[3].id] });
-
-  const questions = await questionRepository.save([question1, question2, question3, question4]);
-
-  await answerChoiceRepository.update(answerChoices1.map((choice) => ({ ...choice, questionId: question1.id })));
+  const questions = questionRepository.create([
+    {
+      content: 'Vad är en grupp?',
+      answerChoices: answerChoiceRepository.create([
+        answerChoiceRepository.create({ answer: 'a' }),
+        answerChoiceRepository.create({ answer: 'b' }),
+        answerChoiceRepository.create({ answer: 'c' }),
+        answerChoiceRepository.create({ answer: 'd' }),
+      ]),
+      categoryIds: [categories[1].id],
+      categories: [categories[1]],
+    },
+    {
+      content: 'Vad är en öppen mängd?',
+      answerChoices: answerChoiceRepository.create([
+        answerChoiceRepository.create({ answer: 'a' }),
+        answerChoiceRepository.create({ answer: 'b' }),
+        answerChoiceRepository.create({ answer: 'c' }),
+        answerChoiceRepository.create({ answer: 'd' }),
+      ]),
+      categoryIds: [categories[3].id],
+      categories: [categories[3]],
+    },
+    {
+      content: 'Vad är en Weierstrass sats?',
+      answerChoices: answerChoiceRepository.create([
+        answerChoiceRepository.create({ answer: 'a' }),
+        answerChoiceRepository.create({ answer: 'b' }),
+        answerChoiceRepository.create({ answer: 'c' }),
+        answerChoiceRepository.create({ answer: 'd' }),
+      ]),
+      categoryIds: [categories[2].id],
+      categories: [categories[2]],
+    },
+    {
+      content: 'Vad är en sluten mängd?',
+      answerChoices: answerChoiceRepository.create([
+        answerChoiceRepository.create({ answer: 'a' }),
+        answerChoiceRepository.create({ answer: 'b' }),
+        answerChoiceRepository.create({ answer: 'c' }),
+        answerChoiceRepository.create({ answer: 'd' }),
+      ]),
+      categoryIds: [categories[3].id],
+      categories: [categories[3]],
+    },
+  ]);
+  await questionRepository.save(questions);
 };
 
 export default initTestData;

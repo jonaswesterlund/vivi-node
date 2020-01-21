@@ -1,6 +1,6 @@
 import { Field, ObjectType, ID } from 'type-graphql';
 import {
-  Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinTable,
+  Entity, PrimaryGeneratedColumn, Column, ManyToOne,
 } from 'typeorm';
 import Question from './Question';
 
@@ -15,10 +15,9 @@ export default class AnswerChoice {
   @Column()
   answer!: string;
 
-  @Column({ nullable: true })
+  @Column()
   questionId!: string;
 
-  @Field(() => Question, { nullable: true })
   @ManyToOne(() => Question)
   question!: Question;
 }
