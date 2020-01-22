@@ -2,7 +2,6 @@ import { getCustomRepository } from 'typeorm';
 import CategoryRepository from '../repository/CategoryRepository';
 import QuestionRepository from '../repository/QuestionRepository';
 import AnswerChoiceRepository from '../repository/AnswerChoiceRepository';
-import AnswerChoice from '../entity/AnswerChoice';
 
 const initTestData = async () => {
   const categoryRepository = getCustomRepository(CategoryRepository);
@@ -23,7 +22,6 @@ const initTestData = async () => {
         answerChoiceRepository.create({ answer: 'c' }),
         answerChoiceRepository.create({ answer: 'd' }),
       ]),
-      categoryIds: [categories[1].id],
       categories: [categories[1]],
     },
     {
@@ -34,7 +32,6 @@ const initTestData = async () => {
         answerChoiceRepository.create({ answer: 'c' }),
         answerChoiceRepository.create({ answer: 'd' }),
       ]),
-      categoryIds: [categories[3].id],
       categories: [categories[3]],
     },
     {
@@ -45,7 +42,6 @@ const initTestData = async () => {
         answerChoiceRepository.create({ answer: 'c' }),
         answerChoiceRepository.create({ answer: 'd' }),
       ]),
-      categoryIds: [categories[2].id],
       categories: [categories[2]],
     },
     {
@@ -56,7 +52,6 @@ const initTestData = async () => {
         answerChoiceRepository.create({ answer: 'c' }),
         answerChoiceRepository.create({ answer: 'd' }),
       ]),
-      categoryIds: [categories[3].id],
       categories: [categories[3]],
     },
   ]);

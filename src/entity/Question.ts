@@ -1,15 +1,17 @@
 import { Field, ObjectType, ID } from 'type-graphql';
 import {
-  Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany,
+  Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, PrimaryColumn,
 } from 'typeorm';
 import Category from './Category';
 import AnswerChoice from './AnswerChoice';
+import Answer from './Answer';
 
 @ObjectType()
 @Entity()
 export default class Question {
   @Field(() => ID)
-  @PrimaryGeneratedColumn('uuid')
+  // @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id!: string;
 
   @Field({ nullable: true })
@@ -20,9 +22,12 @@ export default class Question {
   @OneToMany(() => AnswerChoice, (answerChoice) => answerChoice.question, { cascade: true })
   answerChoices!: AnswerChoice[];
 
-  @Column({ type: 'text', array: true, nullable: true })
-  categoryIds!: string[];
+  @Field(() => [Answer], { nullable: true })
+  @OneToMany(() => Answer, (answer) => answer.question)
+  answers!: Answer[];
 
   @Field(() => [Category], { nullable: true })
+  @ManyToMany(() => Category)
+  @JoinTable()
   categories!: Category[];
 }

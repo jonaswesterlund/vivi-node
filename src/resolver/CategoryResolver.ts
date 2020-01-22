@@ -34,6 +34,7 @@ export default class CategoryResolver {
 
   @FieldResolver(() => [Question])
   async questions(@Root() category: Category) {
-    return this.questionRepository.find({ categoryIds: Raw((alias) => `'${category.id}' = ANY (${alias})`) });
+    const loadedCategory = await this.categoryRepository.findOne(category.id, { relations: ['questions'] }) as Category;
+    return loadedCategory.questions;
   }
 }

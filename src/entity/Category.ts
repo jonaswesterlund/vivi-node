@@ -1,6 +1,6 @@
 import { Field, ObjectType, ID } from 'type-graphql';
 import {
-  Entity, PrimaryGeneratedColumn, Column, ManyToMany,
+  Entity, PrimaryGeneratedColumn, Column, ManyToMany, PrimaryColumn, JoinTable,
 } from 'typeorm';
 import Question from './Question';
 
@@ -8,7 +8,8 @@ import Question from './Question';
 @Entity()
 export default class Category {
   @Field(() => ID)
-  @PrimaryGeneratedColumn('uuid')
+  // @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id!: string;
 
   @Field({ nullable: true })
@@ -16,5 +17,6 @@ export default class Category {
   name!: string;
 
   @Field(() => [Question], { nullable: true })
+  @ManyToMany(() => Question)
   questions!: Question[];
 }

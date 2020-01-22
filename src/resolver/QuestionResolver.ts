@@ -45,12 +45,20 @@ export default class QuestionResolver {
   }
 
   @FieldResolver()
+  async answers(@Root() question: Question) {
+    const loadedQuestion = await this.questionRepository.findOne(question.id, { relations: ['answers'] }) as Question;
+    return loadedQuestion.answers;
+  }
+
+  @FieldResolver()
   async categories(@Root() question: Question) {
-    return this.categoryRepository.findByIds(question.categoryIds);
+    const loadedQuestion = await this.questionRepository.findOne(question.id, { relations: ['categories'] }) as Question;
+    return loadedQuestion.categories;
   }
 
   @FieldResolver()
   async answerChoices(@Root() question: Question) {
-    return this.answerChoiceRepository.find({ questionId: question.id });
+    const loadedQuestion = await this.questionRepository.findOne(question.id, { relations: ['answerChoices'] }) as Question;
+    return loadedQuestion.answerChoices;
   }
 }
