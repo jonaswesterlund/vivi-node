@@ -1,10 +1,11 @@
 import { Field, ObjectType, ID } from 'type-graphql';
 import {
-  Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, PrimaryColumn,
+  Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, OneToOne,
 } from 'typeorm';
 import Category from './Category';
 import AnswerChoice from './AnswerChoice';
 import Answer from './Answer';
+import QuestionEvaluation from './QuestionEvaluation';
 
 @ObjectType()
 @Entity()
@@ -30,4 +31,9 @@ export default class Question {
   @ManyToMany(() => Category)
   @JoinTable()
   categories!: Category[];
+
+  @Field(() => QuestionEvaluation, { nullable: true })
+  @OneToOne(() => QuestionEvaluation)
+  @JoinTable()
+  questionEvaluation!: QuestionEvaluation;
 }
