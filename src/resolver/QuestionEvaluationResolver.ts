@@ -1,13 +1,8 @@
 import {
-  Resolver, Query, Arg, ID, Mutation, FieldResolver, Root,
+  Resolver, Arg, Mutation, FieldResolver, Root,
 } from 'type-graphql';
 import { getCustomRepository } from 'typeorm';
 import QuestionRepository from '../repository/QuestionRepository';
-import Question from '../entity/Question';
-import AddQuestionInput from '../input/AddQuestionInput';
-import AnswerChoiceRepository from '../repository/AnswerChoiceRepository';
-import CategoryRepository from '../repository/CategoryRepository';
-import AddAnswerChoiceInput from '../input/AddAnswerChoiceInput';
 import QuestionEvaluation from '../entity/QuestionEvaluation';
 import QuestionEvaluationRepository from '../repository/QuestionEvaluationRepository';
 import AddAnswerInput from '../input/AddAnswerInput';

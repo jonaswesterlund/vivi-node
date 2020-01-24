@@ -1,7 +1,7 @@
 import {
   Resolver, Query, Arg, Mutation, FieldResolver, Root,
 } from 'type-graphql';
-import { getCustomRepository, Raw } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import CategoryRepository from '../repository/CategoryRepository';
 import Category from '../entity/Category';
 import AddCategoryInput from '../input/AddCategoryInput';

@@ -35,7 +35,7 @@ const initTestData = async () => {
       categories: [categories[3]],
     },
     {
-      content: 'Vad är en Weierstrass sats?',
+      content: 'Vad är Weierstrass sats?',
       answerChoices: answerChoiceRepository.create([
         answerChoiceRepository.create({ answer: 'a' }),
         answerChoiceRepository.create({ answer: 'b' }),
