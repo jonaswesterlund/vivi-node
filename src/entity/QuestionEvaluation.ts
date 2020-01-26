@@ -27,6 +27,5 @@ export default class QuestionEvaluation {
   correctAnswerChoice!: AnswerChoice;
 
   @Field(() => Question, { nullable: true })
-  @OneToOne(() => Question)
   question!: Question;
 }

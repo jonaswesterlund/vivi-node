@@ -1,6 +1,6 @@
 import { Field, ObjectType, ID } from 'type-graphql';
 import {
-  Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, OneToOne,
+  Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, OneToOne, JoinColumn,
 } from 'typeorm';
 import Category from './Category';
 import AnswerChoice from './AnswerChoice';
@@ -28,12 +28,12 @@ export default class Question {
   answers!: Answer[];
 
   @Field(() => [Category], { nullable: true })
-  @ManyToMany(() => Category)
+  @ManyToMany(() => Category, (category) => category.questions)
   @JoinTable()
   categories!: Category[];
 
   @Field(() => QuestionEvaluation, { nullable: true })
   @OneToOne(() => QuestionEvaluation)
-  @JoinTable()
+  @JoinColumn()
   questionEvaluation!: QuestionEvaluation;
 }

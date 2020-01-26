@@ -14,7 +14,7 @@ export default class Answer {
   id!: string;
 
   @Field(() => AnswerChoice, { nullable: true })
-  @ManyToOne(() => AnswerChoice, (answerChoice) => answerChoice.answer)
+  @ManyToOne(() => AnswerChoice, (answerChoice) => answerChoice.answers)
   answerChoice!: AnswerChoice;
 
   @Field(() => Question, { nullable: true })

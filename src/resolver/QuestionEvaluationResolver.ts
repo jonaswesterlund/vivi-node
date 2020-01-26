@@ -24,9 +24,15 @@ export default class QuestionEvaluationResolver {
 
   @Mutation(() => QuestionEvaluation)
   async addAnswer(@Arg('addAnswerInput', () => AddAnswerInput) addAnswerInput: AddAnswerInput) {
-    const question = await this.questionRepository.findOne(addAnswerInput.questionId, { relations: ['answerChoices, questionEvaluation'] });
+    const question = await this.questionRepository.findOne(
+      addAnswerInput.questionId,
+      { relations: ['answerChoices', 'questionEvaluation'] },
+    );
     if (!question) {
       throw new Error('Question not found');
+    }
+    if (!question.questionEvaluation || !question.answerChoices) {
+      throw new Error('Question has no answer choices or has not been evaluated');
     }
     const answer = this.answerRepository.create({
       question,

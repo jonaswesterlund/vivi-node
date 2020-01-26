@@ -61,4 +61,10 @@ export default class QuestionResolver {
     const loadedQuestion = await this.questionRepository.findOne(question.id, { relations: ['answerChoices'] }) as Question;
     return loadedQuestion.answerChoices;
   }
+
+  @FieldResolver()
+  async questionEvaluation(@Root() question: Question) {
+    const loadedQuestion = await this.questionRepository.findOne(question.id, { relations: ['questionEvaluation'] }) as Question;
+    return loadedQuestion.questionEvaluation;
+  }
 }
