@@ -2,6 +2,7 @@ import { getCustomRepository } from 'typeorm';
 import CategoryRepository from '../repository/CategoryRepository';
 import QuestionRepository from '../repository/QuestionRepository';
 import AnswerChoiceRepository from '../repository/AnswerChoiceRepository';
+import QuestionEvaluationRepository from '../repository/QuestionEvaluationRepository';
 
 const initTestData = async () => {
   const categoryRepository = getCustomRepository(CategoryRepository);
@@ -13,48 +14,43 @@ const initTestData = async () => {
 
   const answerChoiceRepository = getCustomRepository(AnswerChoiceRepository);
   const questionRepository = getCustomRepository(QuestionRepository);
-  const questions = questionRepository.create([
+  const questionEvaluationRepository = getCustomRepository(QuestionEvaluationRepository);
+  let questionTemplates = [
     {
       content: 'Vad är en grupp?',
-      answerChoices: answerChoiceRepository.create([
-        answerChoiceRepository.create({ answer: 'a' }),
-        answerChoiceRepository.create({ answer: 'b' }),
-        answerChoiceRepository.create({ answer: 'c' }),
-        answerChoiceRepository.create({ answer: 'd' }),
-      ]),
       categories: [categories[1]],
     },
     {
       content: 'Vad är en öppen mängd?',
-      answerChoices: answerChoiceRepository.create([
-        answerChoiceRepository.create({ answer: 'a' }),
-        answerChoiceRepository.create({ answer: 'b' }),
-        answerChoiceRepository.create({ answer: 'c' }),
-        answerChoiceRepository.create({ answer: 'd' }),
-      ]),
       categories: [categories[3]],
     },
     {
       content: 'Vad är Weierstrass sats?',
-      answerChoices: answerChoiceRepository.create([
-        answerChoiceRepository.create({ answer: 'a' }),
-        answerChoiceRepository.create({ answer: 'b' }),
-        answerChoiceRepository.create({ answer: 'c' }),
-        answerChoiceRepository.create({ answer: 'd' }),
-      ]),
       categories: [categories[2]],
     },
     {
       content: 'Vad är en sluten mängd?',
-      answerChoices: answerChoiceRepository.create([
-        answerChoiceRepository.create({ answer: 'a' }),
-        answerChoiceRepository.create({ answer: 'b' }),
-        answerChoiceRepository.create({ answer: 'c' }),
-        answerChoiceRepository.create({ answer: 'd' }),
-      ]),
       categories: [categories[3]],
     },
-  ]);
+  ];
+  questionTemplates = await Promise.all(questionTemplates.map(async (question) => {
+    const answerChoices = answerChoiceRepository.create([
+      answerChoiceRepository.create({ answer: 'a' }),
+      answerChoiceRepository.create({ answer: 'b' }),
+      answerChoiceRepository.create({ answer: 'c' }),
+      answerChoiceRepository.create({ answer: 'd' }),
+    ]);
+    await answerChoiceRepository.save(answerChoices);
+    const questionEvaluation = questionEvaluationRepository.create({
+      correctAnswerChoice: answerChoices[1],
+      correctAnswerRationale: 'Ja nog är ju det rätt.',
+      incorrectAnswerRationale: 'Nä det var nog fel!',
+    });
+    await questionEvaluationRepository.save(questionEvaluation);
+    return { ...question, answerChoices, questionEvaluation };
+  }));
+
+  const questions = questionRepository.create(questionTemplates);
   await questionRepository.save(questions);
 };
 
