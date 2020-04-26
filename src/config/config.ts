@@ -10,6 +10,4 @@ if (process.env.NODE_ENV === 'test') {
   port = process.env.TEST_PORT;
 }
 
-export default {
-  port,
-};
+export default { port };
