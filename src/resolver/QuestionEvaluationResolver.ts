@@ -38,11 +38,8 @@ export default class QuestionEvaluationResolver {
       question,
       answerChoice: question.answerChoices.find((choice) => choice.id.toString() === addAnswerInput.answerChoiceId),
     });
-    const [questionEvaluation, savedAnswer] = await Promise.all([
-      this.questionEvaluationRepository.findOne(question.questionEvaluation.id),
-      this.answerRepository.save(answer),
-    ]);
-    return questionEvaluation;
+    await this.answerRepository.save(answer);
+    return question.questionEvaluation;
   }
 
   @FieldResolver()
@@ -52,14 +49,5 @@ export default class QuestionEvaluationResolver {
       { relations: ['correctAnswerChoice'] },
     ) as QuestionEvaluation;
     return loadedQuestionEvaluation.correctAnswerChoice;
-  }
-
-  @FieldResolver()
-  async question(@Root() questionEvaluation: QuestionEvaluation) {
-    const loadedQuestionEvaluation = await this.questionEvaluationRepository.findOne(
-      questionEvaluation.id,
-      { relations: ['question'] },
-    ) as QuestionEvaluation;
-    return loadedQuestionEvaluation.question;
   }
 }

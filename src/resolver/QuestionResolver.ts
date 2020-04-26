@@ -8,6 +8,8 @@ import AddQuestionInput from '../input/AddQuestionInput';
 import AnswerChoiceRepository from '../repository/AnswerChoiceRepository';
 import CategoryRepository from '../repository/CategoryRepository';
 import AddAnswerChoiceInput from '../input/AddAnswerChoiceInput';
+import AddQuestionEvaluationInput from '../input/AddQuestionEvaluationInput';
+import AnswerChoice from '../entity/AnswerChoice';
 
 @Resolver(() => Question)
 export default class QuestionResolver {
@@ -36,11 +38,17 @@ export default class QuestionResolver {
   @Mutation(() => Question)
   async addQuestion(
     @Arg('questionInput', () => AddQuestionInput) questionInput: AddQuestionInput,
-    @Arg('answerChoicesInput', () => [AddAnswerChoiceInput]) answerChoicesInput: AddAnswerChoiceInput[],
   ) {
     const question = this.questionRepository.create(questionInput);
-    question.categories = await this.categoryRepository.findByIds(questionInput.categoryIds);
-    question.answerChoices = answerChoicesInput.map((input) => this.answerChoiceRepository.create(input));
+    const correctAnswer = questionInput.answerChoiceInputs.find((answerChoice) => !!answerChoice.isCorrect) as AddAnswerChoiceInput;
+    const createdCorrectAnswer = this.answerChoiceRepository.create(correctAnswer);
+    const answerChoices = questionInput.answerChoiceInputs.map((input) => this.answerChoiceRepository.create(input));
+    console.log(question, answerChoices);
+    const [loadedCategories, loadedAnswerChoices] = await Promise.all(
+      [this.categoryRepository.findByIds(questionInput.categoryIds), this.answerChoiceRepository.save(answerChoices)]
+    );
+    question.categories = loadedCategories;
+    question.answerChoices = loadedAnswerChoices;
     return this.questionRepository.save(question);
   }
 

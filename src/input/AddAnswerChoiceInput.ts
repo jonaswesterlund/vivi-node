@@ -5,4 +5,7 @@ import AnswerChoice from '../entity/AnswerChoice';
 export default class AddAnswerChoiceInput implements Partial<AnswerChoice> {
   @Field({ nullable: true })
   answer!: string;
+
+  @Field({ nullable: true })
+  isCorrect!: boolean;
 }
