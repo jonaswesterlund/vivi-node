@@ -4,13 +4,22 @@ import cors from 'cors';
 import morgan from 'morgan';
 import config from './config/config';
 import { stream, jsonFormat } from './config/logging';
-import { MikroORM, EntityManager, RequestContext } from 'mikro-orm';
+import {
+  MikroORM,
+  EntityManager,
+  RequestContext,
+  EntityRepository,
+} from 'mikro-orm';
 import { logger } from './config/logging';
-import categories from './routes/categories';
+import { categories, answers, questions } from './routes';
+import { Question, Category, Answer } from './entities';
 
 export const DI = {} as {
   orm: MikroORM;
   em: EntityManager;
+  questionRepository: EntityRepository<Question>;
+  categoryRepository: EntityRepository<Category>;
+  answerRepository: EntityRepository<Answer>;
 };
 
 const app = express();
@@ -18,6 +27,9 @@ const app = express();
 (async () => {
   DI.orm = await MikroORM.init();
   DI.em = DI.orm.em;
+  DI.questionRepository = DI.orm.em.getRepository(Question);
+  DI.categoryRepository = DI.orm.em.getRepository(Category);
+  DI.answerRepository = DI.orm.em.getRepository(Answer);
 
   const migrator = DI.orm.getMigrator();
   await migrator.up();
@@ -27,7 +39,9 @@ const app = express();
 
   app.use(morgan(jsonFormat, { stream }));
 
-  app.use('/categories', categories);
+  app.use('/api/categories', categories);
+  app.use('/api/answers', answers);
+  app.use('/api/questions', questions);
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     RequestContext.create(DI.orm.em, next);

@@ -1,13 +1,14 @@
 import express, { NextFunction, Response, Request } from 'express';
+import { DI } from '..';
+import { Category } from '../entities';
 
-const categories = express.Router();
+export const categories = express.Router();
 
 categories.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    res.json([]);
+    const categories: Category[] = await DI.categoryRepository.findAll();
+    res.json(categories);
   } catch (error) {
     next(error);
   }
 });
-
-export default categories;
