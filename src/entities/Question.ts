@@ -31,14 +31,8 @@ export class Question extends BaseEntity {
   )
   questionEvaluations = new Collection<QuestionEvaluation>(this);
 
-  constructor(
-    content: string,
-    answerChoices: Collection<AnswerChoice>,
-    categories: Collection<Category>
-  ) {
+  constructor(content: string) {
     super();
     this.content = content;
-    this.answerChoices = answerChoices;
-    this.categories = categories;
   }
 }

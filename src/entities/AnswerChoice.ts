@@ -16,9 +16,8 @@ export class AnswerChoice extends BaseEntity {
   )
   answers = new Collection<Answer>(this);
 
-  constructor(answer: string, question: Question) {
+  constructor(answer: string) {
     super();
     this.answer = answer;
-    this.question = question;
   }
 }

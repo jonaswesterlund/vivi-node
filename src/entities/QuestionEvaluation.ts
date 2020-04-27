@@ -14,7 +14,7 @@ export class QuestionEvaluation extends BaseEntity {
   correctAnswerChoice: AnswerChoice;
 
   @ManyToOne()
-  question!: Question;
+  question: Question;
 
   constructor(
     correctAnswerRationale: string,

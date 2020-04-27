@@ -13,6 +13,7 @@ import {
 import { logger } from './config/logging';
 import { categories, answers, questions } from './routes';
 import { Question, Category, Answer } from './entities';
+import initTestData from './utils/testData';
 
 export const DI = {} as {
   orm: MikroORM;
@@ -31,8 +32,14 @@ const app = express();
   DI.categoryRepository = DI.orm.em.getRepository(Category);
   DI.answerRepository = DI.orm.em.getRepository(Answer);
 
+  const generator = DI.orm.getSchemaGenerator();
+  await generator.dropSchema();
+  await generator.createSchema();
+
   const migrator = DI.orm.getMigrator();
   await migrator.up();
+
+  await initTestData();
 
   app.use(cors());
   app.use(express.json());
