@@ -5,14 +5,12 @@ import { AnswerChoice, Question } from '.';
 @Entity()
 export class Answer extends BaseEntity {
   @ManyToOne()
-  answerChoice: AnswerChoice;
+  answerChoice?: AnswerChoice;
 
   @ManyToOne()
-  question: Question;
+  question?: Question;
 
-  constructor(answerChoice: AnswerChoice, question: Question) {
+  constructor() {
     super();
-    this.answerChoice = answerChoice;
-    this.question = question;
   }
 }

@@ -1,4 +1,4 @@
-import { Property, Entity, ManyToOne } from 'mikro-orm';
+import { Property, Entity, ManyToOne, OneToOne } from 'mikro-orm';
 import { BaseEntity } from './BaseEntity';
 import { AnswerChoice, Question } from '.';
 
@@ -11,19 +11,21 @@ export class QuestionEvaluation extends BaseEntity {
   incorrectAnswerRationale: string;
 
   @ManyToOne()
-  correctAnswerChoice: AnswerChoice;
+  correctAnswerChoice?: AnswerChoice;
 
-  @ManyToOne()
-  question: Question;
+  @OneToOne(
+    () => Question,
+    question => question.questionEvaluation,
+    { nullable: true }
+  )
+  question?: Question;
 
   constructor(
     correctAnswerRationale: string,
-    incorrectAnswerRationale: string,
-    correctAnswerChoice: AnswerChoice
+    incorrectAnswerRationale: string
   ) {
     super();
     this.correctAnswerRationale = correctAnswerRationale;
     this.incorrectAnswerRationale = incorrectAnswerRationale;
-    this.correctAnswerChoice = correctAnswerChoice;
   }
 }

@@ -1,4 +1,11 @@
-import { Property, Entity, OneToMany, Collection, ManyToMany } from 'mikro-orm';
+import {
+  Property,
+  Entity,
+  OneToMany,
+  Collection,
+  ManyToMany,
+  OneToOne,
+} from 'mikro-orm';
 import { BaseEntity } from './BaseEntity';
 import { Answer, AnswerChoice, Category, QuestionEvaluation } from '.';
 
@@ -25,11 +32,8 @@ export class Question extends BaseEntity {
   )
   categories: Collection<Category> = new Collection<Category>(this);
 
-  @OneToMany(
-    () => QuestionEvaluation,
-    questionEvaluation => questionEvaluation.question
-  )
-  questionEvaluations = new Collection<QuestionEvaluation>(this);
+  @OneToOne()
+  questionEvaluation?: QuestionEvaluation;
 
   constructor(content: string) {
     super();

@@ -8,7 +8,7 @@ export class AnswerChoice extends BaseEntity {
   answer: string;
 
   @ManyToOne()
-  question: Question;
+  question?: Question;
 
   @OneToMany(
     () => Answer,

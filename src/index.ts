@@ -11,8 +11,14 @@ import {
   EntityRepository,
 } from 'mikro-orm';
 import { logger } from './config/logging';
-import { categories, answers, questions } from './routes';
-import { Question, Category, Answer } from './entities';
+import { categories, answers, questions, questionEvaluations } from './routes';
+import {
+  Question,
+  Category,
+  Answer,
+  QuestionEvaluation,
+  AnswerChoice,
+} from './entities';
 import initTestData from './utils/testData';
 
 export const DI = {} as {
@@ -21,6 +27,8 @@ export const DI = {} as {
   questionRepository: EntityRepository<Question>;
   categoryRepository: EntityRepository<Category>;
   answerRepository: EntityRepository<Answer>;
+  questionEvaluationRepository: EntityRepository<QuestionEvaluation>;
+  answerChoiceRepository: EntityRepository<AnswerChoice>;
 };
 
 const app = express();
@@ -31,10 +39,12 @@ const app = express();
   DI.questionRepository = DI.orm.em.getRepository(Question);
   DI.categoryRepository = DI.orm.em.getRepository(Category);
   DI.answerRepository = DI.orm.em.getRepository(Answer);
+  DI.questionEvaluationRepository = DI.orm.em.getRepository(QuestionEvaluation);
+  DI.answerChoiceRepository = DI.orm.em.getRepository(AnswerChoice);
 
   const generator = DI.orm.getSchemaGenerator();
   await generator.dropSchema();
-  await generator.createSchema();
+  await generator.updateSchema();
 
   const migrator = DI.orm.getMigrator();
   await migrator.up();
@@ -49,6 +59,7 @@ const app = express();
   app.use('/api/categories', categories);
   app.use('/api/answers', answers);
   app.use('/api/questions', questions);
+  app.use('/api/questionEvaluations', questionEvaluations);
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     RequestContext.create(DI.orm.em, next);
