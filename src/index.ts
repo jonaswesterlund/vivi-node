@@ -44,7 +44,7 @@ const app = express();
 
   const generator = DI.orm.getSchemaGenerator();
   await generator.dropSchema();
-  await generator.updateSchema();
+  await generator.createSchema();
 
   const migrator = DI.orm.getMigrator();
   await migrator.up();

@@ -8,7 +8,9 @@ questionEvaluations.get(
   '/',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const questionEvaluations: QuestionEvaluation[] = await DI.questionEvaluationRepository.findAll();
+      const questionEvaluations: QuestionEvaluation[] = await DI.questionEvaluationRepository.findAll(
+        ['correctAnswerChoice']
+      );
       res.json(questionEvaluations);
     } catch (error) {
       next(error);

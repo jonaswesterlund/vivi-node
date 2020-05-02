@@ -11,7 +11,7 @@ import { Answer, AnswerChoice, Category, QuestionEvaluation } from '.';
 
 @Entity()
 export class Question extends BaseEntity {
-  @Property()
+  @Property({ columnType: 'varchar' })
   content: string;
 
   @OneToMany(
