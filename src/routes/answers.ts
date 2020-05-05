@@ -28,9 +28,12 @@ answers.post('/', async (req: Request, res: Response, next: NextFunction) => {
     );
     await DI.answerRepository.persistAndFlush(answer);
     res.json(
-      await DI.questionEvaluationRepository.findOne({
-        question: body.questionId,
-      })
+      await DI.questionEvaluationRepository.findOne(
+        {
+          question: body.questionId,
+        },
+        ['correctAnswerChoice']
+      )
     );
   } catch (error) {
     next(error);

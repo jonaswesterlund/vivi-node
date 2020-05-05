@@ -7,7 +7,10 @@ export class Category extends BaseEntity {
   @Property()
   name: string;
 
-  @ManyToMany()
+  @ManyToMany(
+    () => Question,
+    question => question.categories
+  )
   questions: Collection<Question> = new Collection<Question>(this);
 
   constructor(name: string) {

@@ -26,10 +26,7 @@ export class Question extends BaseEntity {
   )
   answers = new Collection<Answer>(this);
 
-  @ManyToMany(
-    () => Category,
-    category => category.questions
-  )
+  @ManyToMany()
   categories: Collection<Category> = new Collection<Category>(this);
 
   @OneToOne()
