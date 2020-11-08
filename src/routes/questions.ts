@@ -1,8 +1,7 @@
 import express, { NextFunction, Response, Request } from 'express';
 import { DI } from '..';
 import { Question, AnswerChoice, QuestionEvaluation } from '../entities';
-import { wrap } from 'mikro-orm';
-import { DiagnosticCategory } from 'typescript';
+import { wrap } from '@mikro-orm/core';
 
 export const questions = express.Router();
 

@@ -1,4 +1,4 @@
-import { Property, Entity, ManyToOne, OneToMany, Collection } from 'mikro-orm';
+import { Property, Entity, ManyToOne, OneToMany, Collection } from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
 import { Answer, Question } from '.';
 
@@ -7,7 +7,7 @@ export class AnswerChoice extends BaseEntity {
   @Property()
   answer: string;
 
-  @ManyToOne()
+  @ManyToOne(() => Question)
   question?: Question;
 
   @OneToMany(

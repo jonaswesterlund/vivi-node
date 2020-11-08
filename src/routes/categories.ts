@@ -1,7 +1,6 @@
 import express, { NextFunction, Response, Request } from 'express';
 import { DI } from '..';
 import { Category } from '../entities';
-import { wrap } from 'mikro-orm';
 
 export const categories = express.Router();
 

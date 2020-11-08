@@ -1,4 +1,4 @@
-import { Property, Entity, ManyToMany, Collection } from 'mikro-orm';
+import { Property, Entity, ManyToMany, Collection } from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
 import { Question } from '.';
 

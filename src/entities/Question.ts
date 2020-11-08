@@ -5,7 +5,7 @@ import {
   Collection,
   ManyToMany,
   OneToOne,
-} from 'mikro-orm';
+} from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
 import { Answer, AnswerChoice, Category, QuestionEvaluation } from '.';
 
@@ -26,10 +26,10 @@ export class Question extends BaseEntity {
   )
   answers = new Collection<Answer>(this);
 
-  @ManyToMany()
+  @ManyToMany(() => Category)
   categories: Collection<Category> = new Collection<Category>(this);
 
-  @OneToOne()
+  @OneToOne(() => QuestionEvaluation)
   questionEvaluation?: QuestionEvaluation;
 
   constructor(content: string) {

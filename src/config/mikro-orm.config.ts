@@ -7,10 +7,9 @@ import {
   QuestionEvaluation,
 } from '../entities';
 import { BaseEntity } from '../entities/BaseEntity';
+import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 
 export default {
-  entitiesDirsTs: ['./src/entities'],
-  // entitiesDirs: ['./build/entities'],
   entities: [
     Answer,
     AnswerChoice,
@@ -27,4 +26,5 @@ export default {
     tableName: 'migrations',
     path: 'src/migrations',
   },
+  metadataProvider: TsMorphMetadataProvider,
 };

@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -9,7 +8,7 @@ import {
   EntityManager,
   RequestContext,
   EntityRepository,
-} from 'mikro-orm';
+} from '@mikro-orm/core';
 import { logger } from './config/logging';
 import { categories, answers, questions, questionEvaluations } from './routes';
 import {
@@ -42,9 +41,11 @@ const app = express();
   DI.questionEvaluationRepository = DI.orm.em.getRepository(QuestionEvaluation);
   DI.answerChoiceRepository = DI.orm.em.getRepository(AnswerChoice);
 
-  const generator = DI.orm.getSchemaGenerator();
-  await generator.dropSchema();
-  await generator.createSchema();
+  if (process.env.NODE_ENV !== 'production') {
+    const generator = DI.orm.getSchemaGenerator();
+    await generator.dropSchema();
+    await generator.createSchema();
+  }
 
   const migrator = DI.orm.getMigrator();
   await migrator.up();
