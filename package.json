@@ -6,7 +6,7 @@
   "scripts": {
     "tsc": "tsc",
     "build": "tsc",
-    "dev": "ts-node-dev NODE_ENV=dev --no-notify --respawn src/index.ts",
+    "dev": "ts-node-dev --no-notify --respawn src/index.ts",
     "prod": "tsc && node ./build/index.js",
     "start": "ts-node src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
