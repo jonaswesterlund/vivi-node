@@ -4,6 +4,7 @@ import {
   Question,
   AnswerChoice,
   QuestionEvaluation,
+  Sequence,
 } from '../entities';
 
 const initTestData = async () => {
@@ -13,6 +14,7 @@ const initTestData = async () => {
     new Category('Algebra'),
     new Category('Sannolikhet'),
   ];
+  const sequence = new Sequence('Allt');
   await DI.categoryRepository.persistAndFlush(categories);
   const question1 = new Question('Hur stort kan episolon vara som störst?');
   const question2 = new Question('Vad är sannolikheten av att jag är bäst?');
@@ -21,7 +23,7 @@ const initTestData = async () => {
   );
   const question4 = new Question('Vad är skillnaden på en grupp och en ring?');
   const questions = [question1, question2, question3, question4];
-  questions.forEach(q => {
+  questions.forEach((q) => {
     const answerChoices = [
       new AnswerChoice('Fel svar'),
       new AnswerChoice('Rätt svar'),
@@ -35,11 +37,12 @@ const initTestData = async () => {
     );
     questionEvaluation.correctAnswerChoice = answerChoices[1];
     q.questionEvaluation = questionEvaluation;
+    q.sequence = sequence;
   });
   questions[0].categories.add(categories[0]);
   questions[1].categories.add(categories[3]);
   questions[2].categories.set([categories[1], categories[3]]);
-  questions[3].categories.add(categories[2]); 
+  questions[3].categories.add(categories[2]);
 
   await DI.questionRepository.persistAndFlush(questions);
 };

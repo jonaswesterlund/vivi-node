@@ -5,6 +5,7 @@ import {
   Category,
   Question,
   QuestionEvaluation,
+  Sequence,
 } from '../entities';
 import { BaseEntity } from '../entities/BaseEntity';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
@@ -17,6 +18,7 @@ export default {
     Category,
     Question,
     QuestionEvaluation,
+    Sequence
   ],
   dbName: process.env.DATABASE_NAME,
   type: 'postgresql',

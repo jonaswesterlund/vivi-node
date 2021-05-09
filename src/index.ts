@@ -17,8 +17,10 @@ import {
   Answer,
   QuestionEvaluation,
   AnswerChoice,
+  Sequence,
 } from './entities';
 import initTestData from './utils/testData';
+import { sequences } from './routes/sequences';
 
 export const DI = {} as {
   orm: MikroORM;
@@ -28,6 +30,7 @@ export const DI = {} as {
   answerRepository: EntityRepository<Answer>;
   questionEvaluationRepository: EntityRepository<QuestionEvaluation>;
   answerChoiceRepository: EntityRepository<AnswerChoice>;
+  sequenceRepository: EntityRepository<Sequence>;
 };
 
 const app = express();
@@ -40,6 +43,7 @@ const app = express();
   DI.answerRepository = DI.orm.em.getRepository(Answer);
   DI.questionEvaluationRepository = DI.orm.em.getRepository(QuestionEvaluation);
   DI.answerChoiceRepository = DI.orm.em.getRepository(AnswerChoice);
+  DI.sequenceRepository = DI.orm.em.getRepository(Sequence);
 
   if (process.env.NODE_ENV !== 'production') {
     const generator = DI.orm.getSchemaGenerator();
@@ -50,8 +54,10 @@ const app = express();
   const migrator = DI.orm.getMigrator();
   await migrator.up();
 
-  await initTestData();
-
+  if (process.env.NODE_ENV !== 'production') {
+    await initTestData();
+  }
+  
   app.use(cors());
   app.use(express.json());
 
@@ -61,6 +67,7 @@ const app = express();
   app.use('/api/answers', answers);
   app.use('/api/questions', questions);
   app.use('/api/questionEvaluations', questionEvaluations);
+  app.use('/api/sequences', sequences);
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     RequestContext.create(DI.orm.em, next);

@@ -5,9 +5,10 @@ import {
   Collection,
   ManyToMany,
   OneToOne,
+  ManyToOne,
 } from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
-import { Answer, AnswerChoice, Category, QuestionEvaluation } from '.';
+import { Answer, AnswerChoice, Category, QuestionEvaluation, Sequence } from '.';
 
 @Entity()
 export class Question extends BaseEntity {
@@ -31,6 +32,9 @@ export class Question extends BaseEntity {
 
   @OneToOne(() => QuestionEvaluation)
   questionEvaluation?: QuestionEvaluation;
+
+  @ManyToOne(() => Sequence)
+  sequence?: Sequence;
 
   constructor(content: string) {
     super();
